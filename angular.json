@@ -123,6 +123,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "ngx-simple-datepicker"
+    }
+  },
+  "defaultProject": "ngx-simple-datepicker",
+  "cli": {
+    "analytics": false
+  }
 }
