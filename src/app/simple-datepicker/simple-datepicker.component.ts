@@ -35,6 +35,7 @@ export class SimpleDatepickerComponent implements OnInit {
     this._date = new Date(newDate);
     this.createCurrentMonth();
     this.createNextMonth();
+    this.checkRangeDays();
   }
 
   constructor() {
@@ -133,17 +134,36 @@ export class SimpleDatepickerComponent implements OnInit {
     this.nextMonth.days.forEach(resetChecked);
   }
 
+  private isMore = (day: Day) => day.date.getTime() >= this.from?.getTime();
+  private isLess = (day: Day) => day.date.getTime() <= this.to?.getTime();
+
   private checkRangeDays(): void {
-    const isMore = (day: Day) => day.date.getTime() >= this.from.getTime();
-    const isLess = (day: Day) => day.date.getTime() <= this.to.getTime();
-    const checkDay = (day: Day) => {
-      if (isMore(day) && isLess(day)) {
+    const {from, to} = this;
+
+    const checkDays = (day: Day) => {
+      if (this.isMore(day) && this.isLess(day)) {
         day.checked = true;
+        day.firstDay = day.date.getTime() === from.getTime();
+        day.lastDay = day.date.getTime() === to.getTime();
       }
     };
 
-    this.month.days.forEach(checkDay);
-    this.nextMonth.days.forEach(checkDay);
+    const checkFromDay = (day: Day) => {
+      if (day.date.getTime() === from.getTime()) {
+        day.checked = true;
+        day.firstDay = true;
+      }
+    };
+
+    if (from && !to) {
+      this.month.days.forEach(checkFromDay);
+      this.nextMonth.days.forEach(checkFromDay);
+    }
+
+    if (from && to) {
+      this.month.days.forEach(checkDays);
+      this.nextMonth.days.forEach(checkDays);
+    }
   }
 
   private resetFromAndTo(): void {

@@ -31,23 +31,32 @@
   }
 
   &.is-checked {
-    background-color: $color_primary;
-    color: $color_light;
+    background-color: $color_light;
     border-radius: 0;
 
+    &:hover,
+    &:focus {
+      background-color: $color_primary;
+      color: $color_light;
+    }
+
     &.first {
-      border-radius: 50px 0 0 50px;
+      background-color: $color_primary;
+      color: $color_light;
+      border-radius: 20px 0 0 20px;
     }
 
     &.last {
-      border-radius: 0 50px 50px 0;
+      background-color: $color_primary;
+      color: $color_light;
+      border-radius: 0 20px 20px 0;
     }
   }
 
   &[disabled] {
     cursor: not-allowed;
-    background-color: transparent;
-    color: $color_disabled;
+    background-color: transparent !important;
+    color: $color_disabled !important;
     opacity: .6;
     font-weight: normal;
   }
