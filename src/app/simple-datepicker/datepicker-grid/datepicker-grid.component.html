@@ -1,0 +1,11 @@
+<label class="month-label">{{currentMonth}}</label>
+<div class="week">
+  <span *ngFor="let day of localDays">{{day}}</span>
+</div>
+<div class="grid">
+  <app-datepicker-day
+    *ngFor="let day of month.days"
+    [day]="day">
+  </app-datepicker-day>
+</div>
+

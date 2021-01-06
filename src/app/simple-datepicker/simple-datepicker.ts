@@ -50,7 +50,7 @@ export class Month {
   private static getDaysBefore(day: Date): Day[] {
     const days: Day[] = [];
 
-    while (day.getDay() !== 0) {
+    while (day.getDay() !== 1) {
       day.setDate(day.getDate() - 1);
 
       days.push(new Day({

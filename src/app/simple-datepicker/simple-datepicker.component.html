@@ -1,13 +1,17 @@
 <div class="datepicker">
-  <label class="date-month-label">{{currentMonth}}</label>
-  <div class="date-week">
-    <span *ngFor="let day of localDays">{{day}}</span>
+  <div class="datepicker-fast">
+    Last week
   </div>
-  <div class="date-grid">
-    <app-datepicker-day
-      *ngFor="let day of month.days"
-      [day]="day"
-      [today]="today">
-    </app-datepicker-day>
-  </div>
+
+  <app-datepicker-grid
+    [month]="month"
+    [currentMonth]="currentMonthLabel"
+    [localDays]="localDays">
+  </app-datepicker-grid>
+
+  <app-datepicker-grid
+    [month]="nextMonth"
+    [currentMonth]="nextMonthLabel"
+    [localDays]="localDays">
+  </app-datepicker-grid>
 </div>

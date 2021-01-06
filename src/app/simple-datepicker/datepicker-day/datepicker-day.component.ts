@@ -9,7 +9,6 @@ import { Day } from '../simple-datepicker';
 export class DatepickerDayComponent implements OnInit {
 
   @Input() day: Day;
-  @Input() today: Date;
   @Input() weekends = ['Сб', 'Вс'];
 
   public isToday: boolean;
