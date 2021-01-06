@@ -1,15 +1,22 @@
 interface IDay {
   date: Date;
   enable: boolean;
+  dayOfWeek?: number;
+  isWeekend?: boolean;
+  isToday?: boolean;
 }
 
 export class Day implements IDay {
   date: Date;
   enable: boolean;
+  dayOfWeek: number;
+  isWeekend = false;
+  isToday: boolean;
 
   constructor(params: IDay) {
     this.date = params.date;
     this.enable = params.enable;
+    this.dayOfWeek = params.date.getDay();
   }
 }
 
@@ -17,17 +24,22 @@ export class Day implements IDay {
 export class Month {
 
   days: Day[];
+  weekends: number[];
 
-  constructor(month: number, year: number) {
-    this.days = Month.getDaysInMonth(month, year);
+  constructor(month: number, year: number, weekends = [5, 6]) {
+    this.weekends = weekends;
+    this.days = Month.getDaysInMonth(month, year, weekends);
   }
 
-  private static getDaysInMonth(month: number, year: number): Day[] {
+  private static getDaysInMonth(month: number, year: number, weekends = [5, 6]): Day[] {
+    const today = new Date(new Date().setHours(0, 0, 0, 0));
     const date = new Date(year, month, 1);
     const days = [];
 
     while (date.getMonth() === month) {
       const day = new Day({date: new Date(date), enable: true});
+      day.isWeekend = weekends.includes(day.dayOfWeek);
+      day.isToday = day.date.getTime() === today.getTime();
       days.push(day);
       date.setDate(date.getDate() + 1);
     }

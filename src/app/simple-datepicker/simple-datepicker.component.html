@@ -4,12 +4,10 @@
     <span *ngFor="let day of localDays">{{day}}</span>
   </div>
   <div class="date-grid">
-    <button class="day"
-            *ngFor="let day of month.days"
-            [disabled]="!day.enable"
-    >
-      <span>{{day.date.getDate()}}</span>
-    </button>
+    <app-datepicker-day
+      *ngFor="let day of month.days"
+      [day]="day"
+      [today]="today">
+    </app-datepicker-day>
   </div>
 </div>
-

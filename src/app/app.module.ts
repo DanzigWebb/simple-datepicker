@@ -6,7 +6,7 @@ import { SimpleDatepickerModule } from './simple-datepicker/simple-datepicker.mo
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     BrowserModule,

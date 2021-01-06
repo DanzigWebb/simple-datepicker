@@ -1,0 +1,8 @@
+<button
+  class="day"
+  [class.is-today]="day.isToday"
+  [class.is-weekend]="day.isWeekend"
+  [disabled]="!day.enable"
+>
+  <span>{{day.date.getDate()}}</span>
+</button>
