@@ -23,34 +23,36 @@ export class Day implements IDay {
 
 export class Month {
 
-  days: Day[];
-  weekends: number[];
+  public readonly days: Day[];
 
-  constructor(month: number, year: number, weekends = [5, 6]) {
-    this.weekends = weekends;
-    this.days = Month.getDaysInMonth(month, year, weekends);
+  constructor(
+    month: number, year: number,
+    private readonly weekends = [5, 6],
+    private readonly firstDay = 1
+  ) {
+    this.days = this.getDaysInMonth(month, year);
   }
 
-  private static getDaysInMonth(month: number, year: number, weekends = [5, 6]): Day[] {
+  private getDaysInMonth(month: number, year: number): Day[] {
     const today = new Date(new Date().setHours(0, 0, 0, 0));
     const date = new Date(year, month, 1);
     const days = [];
 
     while (date.getMonth() === month) {
       const day = new Day({date: new Date(date), enable: true});
-      day.isWeekend = weekends.includes(day.dayOfWeek);
+      day.isWeekend = this.weekends.includes(day.dayOfWeek);
       day.isToday = day.date.getTime() === today.getTime();
       days.push(day);
       date.setDate(date.getDate() + 1);
     }
     const firstDay = new Date(days[0].date);
-    return Month.fillDays([...Month.getDaysBefore(firstDay), ...days]);
+    return Month.fillDays([...this.getDaysBefore(firstDay), ...days]);
   }
 
-  private static getDaysBefore(day: Date): Day[] {
+  private getDaysBefore(day: Date): Day[] {
     const days: Day[] = [];
 
-    while (day.getDay() !== 1) {
+    while (day.getDay() !== this.firstDay) {
       day.setDate(day.getDate() - 1);
 
       days.push(new Day({
