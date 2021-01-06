@@ -9,7 +9,7 @@ import { Month } from '../simple-datepicker';
 export class DatepickerGridComponent implements OnInit {
 
   @Input() month: Month;
-  @Input() currentMonth: string;
+  @Input() monthLabel: string;
   @Input() localDays: string[];
 
   constructor() { }
