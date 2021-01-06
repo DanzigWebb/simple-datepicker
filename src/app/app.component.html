@@ -3,4 +3,12 @@
   <input type="text">
 </label>
 
-<app-simple-datepicker></app-simple-datepicker>
+<app-simple-datepicker
+  (onChecked)="onChecked($event)"
+  (onDayChecked)="onDayChecked($event)"
+  [dateRange]="true">
+</app-simple-datepicker>
+
+
+<p>lastDayChecked: {{lastDayChecked?.toLocaleString()}}</p>
+<p>datePickerOutput: <code>{{datePickerOutput | json}}</code></p>

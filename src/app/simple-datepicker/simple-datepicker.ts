@@ -1,3 +1,8 @@
+export interface DatePickerOutput {
+  from: Date;
+  to: Date;
+}
+
 interface IDay {
   date: Date;
   enable: boolean;

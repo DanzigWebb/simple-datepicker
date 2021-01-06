@@ -1,5 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { Day, Month } from './simple-datepicker';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { DatePickerOutput, Day, Month } from './simple-datepicker';
 
 @Component({
   selector: 'app-simple-datepicker',
@@ -7,6 +7,9 @@ import { Day, Month } from './simple-datepicker';
   styleUrls: ['./simple-datepicker.component.scss']
 })
 export class SimpleDatepickerComponent implements OnInit {
+
+  @Output() onChecked = new EventEmitter<DatePickerOutput>();
+  @Output() onDayChecked = new EventEmitter<Date>();
 
   @Input() localMonth: string[] = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
   @Input() localDays: string[] = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
@@ -74,11 +77,12 @@ export class SimpleDatepickerComponent implements OnInit {
   public from: Date = null;
   public to: Date = null;
 
-  onChecked(day: Day): void {
+  dayChecked(day: Day): void {
     if (!this.dateRange) {
       this.resetCheckedMonth();
       day.checked = true;
       this.from = new Date(day.date);
+      this.onCheckedEmit();
       return;
     }
 
@@ -87,6 +91,7 @@ export class SimpleDatepickerComponent implements OnInit {
       this.from = new Date(day.date);
       day.checked = true;
       day.firstDay = true;
+      this.onCheckedEmit();
       return;
     }
 
@@ -110,7 +115,15 @@ export class SimpleDatepickerComponent implements OnInit {
       this.checkRangeDays();
     }
 
-    console.log('from: ', this.from?.toLocaleString(), 'to: ', this.to?.toLocaleString());
+    this.onDayChecked.emit(day.date);
+    this.onCheckedEmit();
+  }
+
+  private onCheckedEmit() {
+    this.onChecked.emit({
+      from: this.from,
+      to: this.to
+    });
   }
 
   private resetCheckedMonth(): void {
@@ -133,7 +146,7 @@ export class SimpleDatepickerComponent implements OnInit {
     this.nextMonth.days.forEach(checkDay);
   }
 
-  private resetFromAndTo() {
+  private resetFromAndTo(): void {
     this.from = null;
     this.to = null;
   }
