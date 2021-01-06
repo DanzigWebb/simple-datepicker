@@ -26,7 +26,8 @@ export class Month {
   public readonly days: Day[];
 
   constructor(
-    month: number, year: number,
+    month: number,
+    year: number,
     private readonly weekends = [5, 6],
     private readonly firstDay = 1
   ) {

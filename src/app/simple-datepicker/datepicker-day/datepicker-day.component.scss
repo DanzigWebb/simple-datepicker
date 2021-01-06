@@ -1,3 +1,5 @@
+@import "../datepicker.vars";
+
 .day {
   width: 4ch;
   height: 4ch;
@@ -10,11 +12,11 @@
   border: none;
   cursor: pointer;
   background-color: transparent;
-  color: #486581;
+  color: $font_dark;
   transition: all .4s ease;
 
   &.is-today {
-    border: orange 2px solid;
+    border: $color_accent 2px solid;
   }
 
   &.is-weekend {
@@ -23,7 +25,7 @@
 
   &[disabled] {
     cursor: not-allowed;
-    color: #bcccdc;
+    color: $color_disabled;
     opacity: .6;
     font-weight: normal !important;
   }
@@ -31,7 +33,7 @@
   &:hover,
   &:focus {
     outline: none;
-    background-color: #f0f4f8;
-    color: #334e68;
+    background-color: $color_light;
+    color: $color_dark;
   }
 }
