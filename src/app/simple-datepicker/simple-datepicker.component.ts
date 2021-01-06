@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Month } from './simple-datepicker';
+import { Day, Month } from './simple-datepicker';
 
 @Component({
   selector: 'app-simple-datepicker',
@@ -12,6 +12,8 @@ export class SimpleDatepickerComponent implements OnInit {
   @Input() localDays: string[] = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
   @Input() weekends: number[] = [0, 6];
   @Input() firstDayOfWeek: number = 1;
+
+  @Input() dateRange = false;
 
   public month: Month;
   public nextMonth: Month;
@@ -69,4 +71,70 @@ export class SimpleDatepickerComponent implements OnInit {
     this.nextMonth = this.createMonth(nextMonthIndex, nextDate.getFullYear());
   }
 
+  public from: Date = null;
+  public to: Date = null;
+
+  onChecked(day: Day): void {
+    if (!this.dateRange) {
+      this.resetCheckedMonth();
+      day.checked = true;
+      this.from = new Date(day.date);
+      return;
+    }
+
+    if (this.from && this.to) {
+      this.resetCheckedMonth();
+      this.from = new Date(day.date);
+      day.checked = true;
+      day.firstDay = true;
+      return;
+    }
+
+    if (!this.from) {
+      this.from = new Date(day.date);
+      day.checked = true;
+      day.firstDay = true;
+    }
+
+    if (!this.to && (day.date.getTime() < this.from.getTime())) {
+      this.resetCheckedMonth();
+      this.from = new Date(day.date);
+      day.firstDay = true;
+      day.checked = true;
+    }
+
+    if (this.from && !this.to && (day.date.getTime() > this.from.getTime())) {
+      this.to = new Date(day.date);
+      day.checked = true;
+      day.lastDay = true;
+      this.checkRangeDays();
+    }
+
+    console.log('from: ', this.from?.toLocaleString(), 'to: ', this.to?.toLocaleString());
+  }
+
+  private resetCheckedMonth(): void {
+    this.resetFromAndTo();
+    const resetChecked = (day: Day) => day.reset();
+    this.month.days.forEach(resetChecked);
+    this.nextMonth.days.forEach(resetChecked);
+  }
+
+  private checkRangeDays(): void {
+    const isMore = (day: Day) => day.date.getTime() >= this.from.getTime();
+    const isLess = (day: Day) => day.date.getTime() <= this.to.getTime();
+    const checkDay = (day: Day) => {
+      if (isMore(day) && isLess(day)) {
+        day.checked = true;
+      }
+    };
+
+    this.month.days.forEach(checkDay);
+    this.nextMonth.days.forEach(checkDay);
+  }
+
+  private resetFromAndTo() {
+    this.from = null;
+    this.to = null;
+  }
 }

@@ -20,14 +20,7 @@
   }
 
   &.is-weekend {
-    color: red;
-  }
-
-  &[disabled] {
-    cursor: not-allowed;
-    color: $color_disabled;
-    opacity: .6;
-    font-weight: normal !important;
+    color: $color_warn;
   }
 
   &:hover,
@@ -35,5 +28,27 @@
     outline: none;
     background-color: $color_light;
     color: $color_dark;
+  }
+
+  &.is-checked {
+    background-color: $color_primary;
+    color: $color_light;
+    border-radius: 0;
+
+    &.first {
+      border-radius: 50px 0 0 50px;
+    }
+
+    &.last {
+      border-radius: 0 50px 50px 0;
+    }
+  }
+
+  &[disabled] {
+    cursor: not-allowed;
+    background-color: transparent;
+    color: $color_disabled;
+    opacity: .6;
+    font-weight: normal;
   }
 }

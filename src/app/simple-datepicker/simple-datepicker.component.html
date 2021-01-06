@@ -8,12 +8,14 @@
   <app-datepicker-grid
     [month]="month"
     [monthLabel]="currentMonthLabel"
-    [localDays]="localDays">
+    [localDays]="localDays"
+    (dayChecked)="onChecked($event)">
   </app-datepicker-grid>
 
   <app-datepicker-grid
     [month]="nextMonth"
     [monthLabel]="nextMonthLabel"
-    [localDays]="localDays">
+    [localDays]="localDays"
+    (dayChecked)="onChecked($event)">
   </app-datepicker-grid>
 </div>

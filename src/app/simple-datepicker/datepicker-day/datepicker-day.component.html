@@ -2,7 +2,12 @@
   class="day"
   [class.is-today]="day.isToday"
   [class.is-weekend]="day.isWeekend"
+  [class.is-checked]="day.checked"
+  [class.first]="day.firstDay"
+  [class.last]="day.lastDay"
+
   [disabled]="!day.enable"
+  (click)="checkDay()"
 >
   <span>{{day.date.getDate()}}</span>
 </button>

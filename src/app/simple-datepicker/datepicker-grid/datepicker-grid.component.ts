@@ -1,5 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { Month } from '../simple-datepicker';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Day, Month } from '../simple-datepicker';
 
 @Component({
   selector: 'app-datepicker-grid',
@@ -7,6 +7,8 @@ import { Month } from '../simple-datepicker';
   styleUrls: ['./datepicker-grid.component.scss']
 })
 export class DatepickerGridComponent implements OnInit {
+
+  @Output() dayChecked = new EventEmitter<Day>();
 
   @Input() month: Month;
   @Input() monthLabel: string;

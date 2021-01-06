@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Day } from '../simple-datepicker';
 
 @Component({
@@ -7,6 +7,8 @@ import { Day } from '../simple-datepicker';
   styleUrls: ['./datepicker-day.component.scss']
 })
 export class DatepickerDayComponent implements OnInit {
+
+  @Output() dayChecked = new EventEmitter<Day>();
 
   @Input() day: Day;
   @Input() weekends = ['Сб', 'Вс'];
@@ -18,10 +20,10 @@ export class DatepickerDayComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.checkDay()
   }
 
   checkDay(): void {
+    this.dayChecked.emit(this.day);
   }
 
 }

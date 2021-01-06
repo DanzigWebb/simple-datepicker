@@ -1,22 +1,30 @@
 interface IDay {
   date: Date;
   enable: boolean;
-  dayOfWeek?: number;
-  isWeekend?: boolean;
-  isToday?: boolean;
 }
 
 export class Day implements IDay {
   date: Date;
   enable: boolean;
   dayOfWeek: number;
-  isWeekend = false;
   isToday: boolean;
+
+  isWeekend = false;
+  checked = false;
+  firstDay = false;
+  lastDay = false;
+
 
   constructor(params: IDay) {
     this.date = params.date;
     this.enable = params.enable;
     this.dayOfWeek = params.date.getDay();
+  }
+
+  public reset() {
+    this.checked = false;
+    this.firstDay = false;
+    this.lastDay = false;
   }
 }
 
