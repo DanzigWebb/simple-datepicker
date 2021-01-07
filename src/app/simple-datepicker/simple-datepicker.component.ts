@@ -15,8 +15,11 @@ export class SimpleDatepickerComponent implements OnInit {
   @Input() localDays: string[] = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
   @Input() weekends: number[] = [0, 6];
   @Input() firstDayOfWeek: number = 1;
+  @Input() single = true;
 
   @Input() dateRange = false;
+
+  public fastDateShow = true;
 
   public month: Month;
   public nextMonth: Month;
@@ -79,6 +82,8 @@ export class SimpleDatepickerComponent implements OnInit {
   public to: Date = null;
 
   dayChecked(day: Day): void {
+    this.fastDateShow = false;
+
     if (!this.dateRange) {
       this.resetCheckedMonth();
       day.checked = true;

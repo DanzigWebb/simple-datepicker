@@ -1,4 +1,6 @@
-<label class="month-label">{{monthLabel}}</label>
+<div class="control">
+  <ng-content select=".month-control"></ng-content>
+</div>
 <div class="week">
   <span *ngFor="let day of localDays">{{day}}</span>
 </div>

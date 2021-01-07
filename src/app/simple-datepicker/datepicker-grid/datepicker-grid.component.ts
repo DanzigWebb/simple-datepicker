@@ -8,6 +8,8 @@ import { Day, Month } from '../simple-datepicker';
 })
 export class DatepickerGridComponent implements OnInit {
 
+  @Output() onNextMonth = new EventEmitter()
+  @Output() onPrevMonth = new EventEmitter()
   @Output() dayChecked = new EventEmitter<Day>();
 
   @Input() month: Month;

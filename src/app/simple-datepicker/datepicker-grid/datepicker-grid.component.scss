@@ -1,5 +1,12 @@
 @import "../datepicker.vars";
 
+.control {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 10px;
+}
+
 .week,
 .grid {
   display: grid;
@@ -29,14 +36,4 @@
   cursor: pointer;
   border-radius: 3px;
   overflow: hidden;
-}
-
-.month-label {
-  display: block;
-  width: 100%;
-
-  color: $font_light;
-  font-size: .9rem;
-  text-align: center;
-  padding-bottom: 10px;
 }

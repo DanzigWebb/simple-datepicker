@@ -2,6 +2,9 @@
 
 .datepicker {
   font-family: sans-serif;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
   max-width: max-content;
   margin: 3em auto 0 auto;
   padding: 1.5em;
@@ -10,11 +13,15 @@
   border-radius: 8px;
 
   display: grid;
-  grid-template-columns: auto 1fr 1fr;
+  grid-template-columns: 1fr 1fr;
   align-items: flex-start;
   grid-gap: 1rem;
 
   box-shadow: 0 4px 5px -2px rgb(0 0 0 / 0.4);
+
+  &.single {
+    grid-template-columns: 1fr;
+  }
 
   * {
     box-sizing: border-box;
@@ -24,8 +31,32 @@
 
 .datepicker-fast {
   display: grid;
+  align-items: flex-start;
   grid-gap: .6rem;
-  padding-right: .8rem;
+  z-index: 2;
+
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 50%;
+
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 1rem;
+
+  box-shadow: 6px 0 10px -5px rgba(0, 0, 0, 0.4);
+  transform: translateX(calc(-100% - 3rem));
+
+  transition: .4s ease all;
+
+  &.is-show {
+    transform: translateX(0);
+  }
+}
+
+.fast-wrapper {
+  display: grid;
+  grid-gap: 8px;
 }
 
 .datepicker-btn {
@@ -35,4 +66,30 @@
   color: $font_dark;
   text-align: left;
   width: 100%;
+  padding: 6px;
 }
+
+.month {
+  &-control{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+
+    &-btn {
+      border: none;
+      background-color: transparent;
+      cursor: pointer;
+    }
+  }
+
+  &-label {
+    display: block;
+    width: 100%;
+
+    color: $font_light;
+    font-size: .9rem;
+    text-align: center;
+  }
+}
+
