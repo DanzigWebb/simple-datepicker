@@ -7,9 +7,9 @@
   (onChecked)="onChecked($event)"
   (onDayChecked)="onDayChecked($event)"
   [dateRange]="true"
-  [single]="true">
+  [single]="false">
 </app-simple-datepicker>
 
 
 <p>lastDayChecked: {{lastDayChecked?.toLocaleString()}}</p>
-<p>datePickerOutput: <code>{{datePickerOutput | json}}</code></p>
+<p>datePickerOutput: <code>{{datePickerOutput?.from | date }}</code> - <code>{{datePickerOutput?.to | date }}</code></p>

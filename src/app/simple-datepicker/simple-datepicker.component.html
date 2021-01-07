@@ -1,7 +1,13 @@
 <div class="datepicker" [class.single]="single">
 
   <div class="datepicker-fast" [class.is-show]="fastDateShow">
-    <button (click)="fastDateShow = !fastDateShow">x</button>
+    <button
+      class="datepicker-fast-trigger"
+      (click)="fastDateShow = !fastDateShow"
+    >
+      &#10095;
+    </button>
+
     <div class="fast-wrapper">
       <button class="datepicker-btn">Неделя</button>
       <button class="datepicker-btn">Месяц</button>
@@ -34,4 +40,9 @@
       <button class="month-control-btn" (click)="setNextMonth()">></button>
     </div>
   </app-datepicker-grid>
+
+  <div class="datepicker-control">
+    <button class="datepicker-control-btn close">Close</button>
+    <button class="datepicker-control-btn submit">Submit</button>
+  </div>
 </div>
