@@ -155,13 +155,14 @@
     }
   }
 
+  &-select,
   &-label {
     display: block;
-    width: 100%;
 
     color: $font_light;
     font-size: .9rem;
     text-align: center;
+    border: none;
   }
 }
 

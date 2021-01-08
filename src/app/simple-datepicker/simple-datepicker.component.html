@@ -1,29 +1,33 @@
 <div class="datepicker" [class.is-close]="!isOpen" [class.single]="single">
 
-  <div class="datepicker-fast" [class.is-show]="fastDateShow">
-    <button
-      class="datepicker-fast-trigger"
-      (click)="fastDateShow = !fastDateShow"
-    >
-      &#10095;
-    </button>
+  <!--<div class="datepicker-fast" [class.is-show]="fastDateShow">-->
+  <!--  <button-->
+  <!--    class="datepicker-fast-trigger"-->
+  <!--    (click)="fastDateShow = !fastDateShow"-->
+  <!--  >-->
+  <!--    &#10095;-->
+  <!--  </button>-->
 
-    <div class="fast-wrapper">
-      <button class="datepicker-btn">Неделя</button>
-      <button class="datepicker-btn">Месяц</button>
-      <button class="datepicker-btn">Год</button>
-    </div>
-  </div>
+  <!--  <div class="fast-wrapper">-->
+  <!--    <button class="datepicker-btn">Неделя</button>-->
+  <!--    <button class="datepicker-btn">Месяц</button>-->
+  <!--    <button class="datepicker-btn">Год</button>-->
+  <!--  </div>-->
+  <!--</div>-->
 
   <app-datepicker-grid
     [month]="month"
     [monthLabel]="currentMonthLabel"
     [localDays]="localDays"
-    (dayChecked)="dayChecked($event)"
+    (dayChecked)="dayCheckedHandle($event)"
   >
     <div class="month-control">
       <button class="month-control-btn" (click)="setPrevMonth()"><</button>
-      <label class="month-label">{{currentMonthLabel}}</label>
+
+      <select class="month-select" name="month" [value]="currentMonthIndex" (change)="onSelectMonth($event)">
+        <option *ngFor="let month of localMonth, index as i" [value]="i">{{month}}</option>
+      </select>
+
       <button class="month-control-btn" (click)="setNextMonth()" *ngIf="single">></button>
     </div>
   </app-datepicker-grid>
@@ -33,7 +37,7 @@
     [month]="nextMonth"
     [monthLabel]="nextMonthLabel"
     [localDays]="localDays"
-    (dayChecked)="dayChecked($event)"
+    (dayChecked)="dayCheckedHandle($event)"
   >
     <div class="month-control">
       <label class="month-label">{{nextMonthLabel}}</label>

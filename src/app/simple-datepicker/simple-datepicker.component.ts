@@ -33,6 +33,18 @@ export class SimpleDatepickerComponent implements OnInit {
   public nextMonthLabel: string;
   public today = new Date(new Date().setHours(0, 0, 0, 0));
 
+  get currentMonthIndex() {
+    return this._currentMonthIndex;
+  }
+
+  set currentMonthIndex(index) {
+    index = Number(index);
+    this.currentMonthLabel = this.localMonth[index];
+    this._currentMonthIndex = index;
+  }
+
+  private _currentMonthIndex: number;
+
   private _date: Date;
 
   get date() {
@@ -69,13 +81,13 @@ export class SimpleDatepickerComponent implements OnInit {
     new Month(month, year, this.weekends, this.firstDayOfWeek)
   );
 
-  createCurrentMonth() {
-    const monthIndex = this.date.getMonth();
-    this.currentMonthLabel = this.localMonth[monthIndex];
-    this.month = this.createMonth(monthIndex, this.date.getFullYear());
+  createCurrentMonth(): void {
+    this.currentMonthIndex = this.date.getMonth();
+    this.currentMonthLabel = this.localMonth[this.currentMonthIndex];
+    this.month = this.createMonth(this.currentMonthIndex, this.date.getFullYear());
   }
 
-  createNextMonth() {
+  createNextMonth(): void {
     const nextDate = new Date(this.date.getTime());
     nextDate.setMonth(nextDate.getMonth() + 1);
     const nextMonthIndex = nextDate.getMonth();
@@ -83,10 +95,15 @@ export class SimpleDatepickerComponent implements OnInit {
     this.nextMonth = this.createMonth(nextMonthIndex, nextDate.getFullYear());
   }
 
+  onSelectMonth(event: { target: HTMLSelectElement }): void {
+    const monthIndex = +event.target.value;
+    this.date = new Date(this.date.setMonth(monthIndex));
+  }
+
   public from: Date = null;
   public to: Date = null;
 
-  dayChecked(day: Day): void {
+  dayCheckedHandle(day: Day): void {
     this.fastDateShow = false;
 
     if (!this.dateRange) {
@@ -180,4 +197,5 @@ export class SimpleDatepickerComponent implements OnInit {
     this.from = null;
     this.to = null;
   }
+
 }
