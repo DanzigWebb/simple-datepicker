@@ -53,6 +53,12 @@
     }
   }
 
+  &.is-single-pick.is-checked {
+    background-color: $color_primary;
+    color: $color_light;
+    border-radius: 0;
+  }
+
   &[disabled] {
     cursor: not-allowed;
     background-color: transparent !important;

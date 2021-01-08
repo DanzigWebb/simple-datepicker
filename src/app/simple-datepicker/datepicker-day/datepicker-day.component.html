@@ -1,5 +1,6 @@
 <button
   class="day"
+  [class.is-single-pick]="!isRange"
   [class.is-today]="day.isToday"
   [class.is-weekend]="day.isWeekend"
   [class.is-checked]="day.checked"

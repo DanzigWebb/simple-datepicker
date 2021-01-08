@@ -19,7 +19,6 @@ export class Day implements IDay {
   firstDay = false;
   lastDay = false;
 
-
   constructor(params: IDay) {
     this.date = params.date;
     this.enable = params.enable;

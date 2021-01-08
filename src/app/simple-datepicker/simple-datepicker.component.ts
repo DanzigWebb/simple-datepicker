@@ -19,13 +19,9 @@ export class SimpleDatepickerComponent implements OnInit {
   @Input() weekends: number[] = [0, 6];
   @Input() firstDayOfWeek: number = 1;
   @Input() single = true;
-
   @Input() dateRange = false;
 
-  public isOpen = false;
-
   public fastDateShow = true;
-
   public month: Month;
   public nextMonth: Month;
 
@@ -179,6 +175,8 @@ export class SimpleDatepickerComponent implements OnInit {
       if (day.date.getTime() === from.getTime()) {
         day.checked = true;
         day.firstDay = true;
+        if (this.dateRange) {
+        }
       }
     };
 

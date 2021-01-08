@@ -12,6 +12,7 @@ export class DatepickerDayComponent implements OnInit {
 
   @Input() day: Day;
   @Input() weekends = ['Сб', 'Вс'];
+  @Input() isRange = false;
 
   public isToday: boolean;
   public isWeekend: boolean;

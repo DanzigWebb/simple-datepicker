@@ -1,4 +1,4 @@
-<div class="datepicker" [class.is-close]="!isOpen" [class.single]="single">
+<div class="datepicker" [class.single]="single" (click)="$event.stopPropagation()">
 
   <!--<div class="datepicker-fast" [class.is-show]="fastDateShow">-->
   <!--  <button-->
@@ -19,6 +19,7 @@
     [month]="month"
     [monthLabel]="currentMonthLabel"
     [localDays]="localDays"
+    [isRange]="dateRange"
     (dayChecked)="dayCheckedHandle($event)"
   >
     <div class="month-control">
@@ -46,7 +47,7 @@
   </app-datepicker-grid>
 
   <div class="datepicker-control">
-    <button class="datepicker-control-btn close" (click)="onClickClose.emit()">Close</button>
-    <button class="datepicker-control-btn submit" (click)="onClickSubmit.emit()">Submit</button>
+    <button class="datepicker-control-btn close" (click)="onClickClose.emit()">&#10005;</button>
+    <button class="datepicker-control-btn submit" (click)="onClickSubmit.emit()">&#10004;</button>
   </div>
 </div>

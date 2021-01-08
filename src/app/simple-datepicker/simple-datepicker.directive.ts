@@ -1,6 +1,6 @@
-import { ApplicationRef, ComponentFactoryResolver, Directive, ElementRef, EmbeddedViewRef, EventEmitter, Injector, Input, OnInit, Output } from '@angular/core';
+import { ApplicationRef, ComponentFactoryResolver, ComponentRef, Directive, ElementRef, EmbeddedViewRef, EventEmitter, Injector, Input, OnInit, Output } from '@angular/core';
 import { SimpleDatepickerComponent } from './simple-datepicker.component';
-import { createPopper } from '@popperjs/core';
+import { createPopper, Placement } from '@popperjs/core';
 import { DatePickerOutput } from './simple-datepicker';
 
 @Directive({
@@ -18,8 +18,14 @@ export class SimpleDatepickerDirective implements OnInit {
   @Input() single = true;
   @Input() dateRange = false;
 
+  @Input() placement: Placement = 'bottom-start';
+
   datepickerRef: HTMLElement;
   datepickerComp: SimpleDatepickerComponent;
+  componentRef: ComponentRef<SimpleDatepickerComponent>;
+  overlay: HTMLDivElement;
+
+  datepickerValue: DatePickerOutput;
 
   constructor(
     private el: ElementRef,
@@ -27,29 +33,29 @@ export class SimpleDatepickerDirective implements OnInit {
     private injector: Injector,
     private appRef: ApplicationRef
   ) {
-    this.loadComponent();
   }
 
   ngOnInit() {
-    this.loadComponent();
-    this.listenEvents();
+    this.el.nativeElement.addEventListener('click', (e: { target: HTMLInputElement }) => {
+      e.target.blur();
+      this.createDatepicker();
+      this.listenEvents();
+    });
   }
 
-  loadComponent() {
+  createDatepicker() {
     const componentFactory = this.componentFactoryResolver.resolveComponentFactory(SimpleDatepickerComponent);
-    const componentRef = componentFactory.create(this.injector);
-    this.appRef.attachView(componentRef.hostView);
-    const domElem = (componentRef.hostView as EmbeddedViewRef<any>).rootNodes[0] as HTMLElement;
-    document.body.appendChild(domElem);
+    this.componentRef = componentFactory.create(this.injector);
+    this.appRef.attachView(this.componentRef.hostView);
+    const domElem = (this.componentRef.hostView as EmbeddedViewRef<any>).rootNodes[0] as HTMLElement;
+    this.overlay = this.createOverlay();
+    document.body.appendChild(this.overlay);
+    this.overlay.appendChild(domElem);
     this.datepickerRef = domElem;
-    this.datepickerComp = componentRef.instance;
+    this.datepickerComp = this.componentRef.instance;
 
     this.compareInputs();
     this.initPopper();
-
-    this.el.nativeElement.addEventListener('click', e => {
-      this.datepickerComp.isOpen = true;
-    });
   }
 
   compareInputs() {
@@ -59,29 +65,55 @@ export class SimpleDatepickerDirective implements OnInit {
     this.datepickerComp.firstDayOfWeek = this.firstDayOfWeek;
     this.datepickerComp.single = this.single;
     this.datepickerComp.dateRange = this.dateRange;
+    this.datepickerComp.from = this.datepickerValue?.from;
+    this.datepickerComp.to = this.datepickerValue?.to;
   }
 
   listenEvents() {
-    this.datepickerComp.onChecked.subscribe(e => {
+    this.datepickerComp.onChecked.subscribe((e: DatePickerOutput) => {
+      this.datepickerValue = e;
       this.onChecked.emit(e);
     });
     this.datepickerComp.onDayChecked.subscribe(e => {
-      this.onDayChecked.emit(e)
+      this.onDayChecked.emit(e);
     });
 
     this.datepickerComp.onClickClose.subscribe(() => {
-      this.datepickerComp.isOpen = false;
+      this.destroyDatepicker();
     });
 
     this.datepickerComp.onClickSubmit.subscribe(() => {
-      this.datepickerComp.isOpen = false;
-      this.el.nativeElement.value = this.datepickerComp.from?.toDateString() + this.datepickerComp.to?.toDateString()
+      this.destroyDatepicker();
+      this.setInputValue();
     });
   }
 
-  initPopper() {
+  setInputValue() {
+    const {from, to} = this.datepickerValue;
+    const createDateString = (date: Date) => (
+      date && `${date.getFullYear()}.${date.getMonth() + 1}.${date.getDate()}`
+    );
+    const fromStr = createDateString(from);
+    const toStr = createDateString(to);
+    this.el.nativeElement.value = this.dateRange ? `${fromStr} — ${toStr}` : `${fromStr}`;
+  }
+
+  createOverlay(): HTMLDivElement {
+    const overlay = document.createElement('div');
+    overlay.classList.add('datepicker-overlay');
+    overlay.setAttribute('style', 'position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 11');
+    overlay.addEventListener('click', e => this.destroyDatepicker(), {once: true});
+    return overlay;
+  }
+
+  destroyDatepicker(): void {
+    this.componentRef.destroy();
+    this.overlay.remove();
+  }
+
+  initPopper(): void {
     createPopper(this.el.nativeElement, this.datepickerRef, {
-      placement: 'bottom-start'
+      placement: this.placement
     });
   }
 }

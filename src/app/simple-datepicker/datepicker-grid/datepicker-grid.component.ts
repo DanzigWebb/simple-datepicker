@@ -15,6 +15,7 @@ export class DatepickerGridComponent implements OnInit {
   @Input() month: Month;
   @Input() monthLabel: string;
   @Input() localDays: string[];
+  @Input() isRange = false;
 
   constructor() { }
 

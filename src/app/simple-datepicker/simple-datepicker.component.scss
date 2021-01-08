@@ -23,10 +23,6 @@
     display: none;
   }
 
-  &.single {
-    grid-template-columns: 1fr;
-  }
-
   &-control {
     margin-left: auto;
     width: 100%;
@@ -53,12 +49,25 @@
         box-shadow: 0 1px 4px -1px rgb(0 0 0 / 60%);
       }
 
+      &.close {
+        color: $color_warn;
+        font-weight: bold;
+      }
+
       &:hover {
         opacity: .85;
         &:not(.submit) {
           color: $color_dark;
         }
       }
+    }
+  }
+
+  &.single {
+    grid-template-columns: 1fr;
+
+    .datepicker-control {
+      grid-column: 1/2;
     }
   }
 
