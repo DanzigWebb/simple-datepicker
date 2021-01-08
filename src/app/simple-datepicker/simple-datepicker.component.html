@@ -1,4 +1,4 @@
-<div class="datepicker" [class.single]="single">
+<div class="datepicker" [class.is-close]="!isOpen" [class.single]="single">
 
   <div class="datepicker-fast" [class.is-show]="fastDateShow">
     <button
@@ -42,7 +42,7 @@
   </app-datepicker-grid>
 
   <div class="datepicker-control">
-    <button class="datepicker-control-btn close">Close</button>
-    <button class="datepicker-control-btn submit">Submit</button>
+    <button class="datepicker-control-btn close" (click)="onClickClose.emit()">Close</button>
+    <button class="datepicker-control-btn submit" (click)="onClickSubmit.emit()">Submit</button>
   </div>
 </div>

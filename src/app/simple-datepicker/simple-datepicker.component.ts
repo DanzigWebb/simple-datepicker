@@ -11,6 +11,9 @@ export class SimpleDatepickerComponent implements OnInit {
   @Output() onChecked = new EventEmitter<DatePickerOutput>();
   @Output() onDayChecked = new EventEmitter<Date>();
 
+  @Output() onClickClose = new EventEmitter();
+  @Output() onClickSubmit = new EventEmitter();
+
   @Input() localMonth: string[] = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
   @Input() localDays: string[] = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
   @Input() weekends: number[] = [0, 6];
@@ -18,6 +21,8 @@ export class SimpleDatepickerComponent implements OnInit {
   @Input() single = true;
 
   @Input() dateRange = false;
+
+  public isOpen = false;
 
   public fastDateShow = true;
 
@@ -121,7 +126,7 @@ export class SimpleDatepickerComponent implements OnInit {
       this.checkRangeDays();
     }
 
-    this.onDayChecked.emit(day.date);
+    this.onDayChecked.emit(new Date(day?.date));
     this.onCheckedEmit();
   }
 

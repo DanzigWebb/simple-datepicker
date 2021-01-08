@@ -1,15 +1,41 @@
-<label>
-  <span>Pick date</span>
-  <input type="text">
-</label>
+<div class="container">
+  <label>
+    <span>Pick date</span>
+    <input type="text"
+           appSimpleDatepicker
+           [single]="true"
+           [dateRange]="true"
+    >
+  </label>
 
-<app-simple-datepicker
-  (onChecked)="onChecked($event)"
-  (onDayChecked)="onDayChecked($event)"
-  [dateRange]="true"
-  [single]="false">
-</app-simple-datepicker>
+  <!--<label>-->
+  <!--  <span>Pick date</span>-->
+  <!--  <input type="text"-->
+  <!--         appSimpleDatepicker-->
+  <!--         [single]="false"-->
+  <!--         [dateRange]="true"-->
+  <!--  >-->
+  <!--</label>-->
+
+  <!--<label>-->
+  <!--  <span>Pick date</span>-->
+  <!--  <input type="text"-->
+  <!--         appSimpleDatepicker-->
+  <!--         [single]="false"-->
+  <!--         [dateRange]="true"-->
+  <!--  >-->
+  <!--</label>-->
+</div>
 
 
-<p>lastDayChecked: {{lastDayChecked?.toLocaleString()}}</p>
-<p>datePickerOutput: <code>{{datePickerOutput?.from | date }}</code> - <code>{{datePickerOutput?.to | date }}</code></p>
+<!--<app-simple-datepicker-->
+<!--  [class.show]="isShow"-->
+<!--  id="picker"-->
+<!--  (onChecked)="onChecked($event)"-->
+<!--  (onDayChecked)="onDayChecked($event)"-->
+<!--  [dateRange]="true"-->
+<!--  [single]="false">-->
+<!--</app-simple-datepicker>-->
+
+
+

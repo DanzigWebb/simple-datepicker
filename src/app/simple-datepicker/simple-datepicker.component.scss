@@ -6,7 +6,6 @@
   overflow: hidden;
   z-index: 1;
   max-width: max-content;
-  margin: 3em auto 0 auto;
   padding: 1.5em;
   background-color: #fff;
   border: 2px solid $color_light;
@@ -19,6 +18,10 @@
   grid-column-gap: 1rem;
 
   box-shadow: 0 4px 5px -2px rgb(0 0 0 / 0.4);
+
+  &.is-close {
+    display: none;
+  }
 
   &.single {
     grid-template-columns: 1fr;
