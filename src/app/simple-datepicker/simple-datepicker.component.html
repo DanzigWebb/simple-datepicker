@@ -38,6 +38,7 @@
     [month]="nextMonth"
     [monthLabel]="nextMonthLabel"
     [localDays]="localDays"
+    [isRange]="dateRange"
     (dayChecked)="dayCheckedHandle($event)"
   >
     <div class="month-control">
@@ -48,6 +49,6 @@
 
   <div class="datepicker-control">
     <button class="datepicker-control-btn close" (click)="onClickClose.emit()">&#10005;</button>
-    <button class="datepicker-control-btn submit" (click)="onClickSubmit.emit()">&#10004;</button>
+    <button class="datepicker-control-btn submit" [disabled]="!isCanSubmit" (click)="onClickSubmit.emit()">&#10004;</button>
   </div>
 </div>

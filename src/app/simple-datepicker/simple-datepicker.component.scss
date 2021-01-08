@@ -1,7 +1,7 @@
 @import "datepicker.vars";
 
 .datepicker {
-  font-family: sans-serif;
+  font-family: system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Liberation Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";;
   position: relative;
   overflow: hidden;
   z-index: 1;
@@ -38,6 +38,7 @@
       cursor: pointer;
       transition: .4s ease all;
       outline: none;
+      font-size: 1rem;
 
       & + & {
         margin-left: 10px;
@@ -47,6 +48,13 @@
         background-color: $color_primary;
         color: $color_light;
         box-shadow: 0 1px 4px -1px rgb(0 0 0 / 60%);
+
+        &[disabled] {
+          transition-duration: 0s;
+          background-color: $color_light;
+          box-shadow: none;
+          color: $color_lighter
+        }
       }
 
       &.close {

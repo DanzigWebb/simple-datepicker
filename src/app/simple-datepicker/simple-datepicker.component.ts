@@ -29,6 +29,14 @@ export class SimpleDatepickerComponent implements OnInit {
   public nextMonthLabel: string;
   public today = new Date(new Date().setHours(0, 0, 0, 0));
 
+   get isCanSubmit() {
+     if (this.dateRange) {
+       return this.from && this.to
+     } else {
+       return this.from
+     }
+   };
+
   get currentMonthIndex() {
     return this._currentMonthIndex;
   }
