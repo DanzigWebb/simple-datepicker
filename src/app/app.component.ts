@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { DatePickerOutput } from './simple-datepicker/simple-datepicker';
+import { IDatePickerOutput } from './simple-datepicker/simple-datepicker';
 import { createPopper } from '@popperjs/core';
 
 @Component({
@@ -11,7 +11,7 @@ export class AppComponent implements OnInit{
   title = 'ngx-simple-datepicker';
 
   lastDayChecked: Date;
-  datePickerOutput: DatePickerOutput;
+  datePickerOutput: IDatePickerOutput;
 
   isShow = false;
 
@@ -24,7 +24,7 @@ export class AppComponent implements OnInit{
     // });
   }
 
-  onChecked(date: DatePickerOutput) {
+  onChecked(date: IDatePickerOutput) {
     this.datePickerOutput = date;
   }
 

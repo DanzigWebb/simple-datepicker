@@ -1,5 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { DatePickerOutput, Day, Month } from './simple-datepicker';
+import { DatePickerOutput, DateRange, dateRanges, Day, IDatePickerOutput, Month } from './simple-datepicker';
+import { BehaviorSubject } from 'rxjs';
+import { delay, distinctUntilChanged } from 'rxjs/operators';
 
 @Component({
   selector: 'app-simple-datepicker',
@@ -8,20 +10,24 @@ import { DatePickerOutput, Day, Month } from './simple-datepicker';
 })
 export class SimpleDatepickerComponent implements OnInit {
 
-  @Output() onChecked = new EventEmitter<DatePickerOutput>();
+  @Output() onChecked = new EventEmitter<IDatePickerOutput>();
   @Output() onDayChecked = new EventEmitter<Date>();
 
   @Output() onClickClose = new EventEmitter();
   @Output() onClickSubmit = new EventEmitter();
+  @Output() onFastDateCheck = new EventEmitter();
 
   @Input() localMonth: string[] = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
   @Input() localDays: string[] = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
+  @Input() dateRanges: DateRange[] = dateRanges;
   @Input() weekends: number[] = [0, 6];
   @Input() firstDayOfWeek: number = 1;
   @Input() single = true;
   @Input() dateRange = false;
 
-  public fastDateShow = true;
+  updateDate = new BehaviorSubject<Date>(new Date());
+
+  public dateRangeShow = true;
   public month: Month;
   public nextMonth: Month;
 
@@ -29,13 +35,13 @@ export class SimpleDatepickerComponent implements OnInit {
   public nextMonthLabel: string;
   public today = new Date(new Date().setHours(0, 0, 0, 0));
 
-   get isCanSubmit() {
-     if (this.dateRange) {
-       return this.from && this.to
-     } else {
-       return this.from
-     }
-   };
+  get isCanSubmit() {
+    if (this.dateRange) {
+      return this.from && this.to;
+    } else {
+      return this.from;
+    }
+  };
 
   get currentMonthIndex() {
     return this._currentMonthIndex;
@@ -62,11 +68,15 @@ export class SimpleDatepickerComponent implements OnInit {
     this.checkRangeDays();
   }
 
-  constructor() {
-  }
-
   ngOnInit(): void {
     this.date = new Date();
+
+    this.updateDate.pipe(
+      delay(50),
+      distinctUntilChanged((prev, next) => prev.getTime() === next.getTime())
+    ).subscribe(date => {
+      this.date = new Date(date);
+    });
   }
 
   setPrevMonth(): void {
@@ -108,7 +118,7 @@ export class SimpleDatepickerComponent implements OnInit {
   public to: Date = null;
 
   dayCheckedHandle(day: Day): void {
-    this.fastDateShow = false;
+    this.dateRangeShow = false;
 
     if (!this.dateRange) {
       this.resetCheckedMonth();
@@ -152,10 +162,9 @@ export class SimpleDatepickerComponent implements OnInit {
   }
 
   private onCheckedEmit() {
-    this.onChecked.emit({
-      from: this.from,
-      to: this.to
-    });
+    this.onChecked.emit(
+      new DatePickerOutput(this.from, this.to)
+    );
   }
 
   private resetCheckedMonth(): void {
@@ -169,7 +178,9 @@ export class SimpleDatepickerComponent implements OnInit {
   private isLess = (day: Day) => day.date.getTime() <= this.to?.getTime();
 
   private checkRangeDays(): void {
-    const {from, to} = this;
+    let {from, to} = this;
+    from = new Date(from?.setHours(0, 0, 0, 0));
+    to = new Date(to?.setHours(0, 0, 0, 0));
 
     const checkDays = (day: Day) => {
       if (this.isMore(day) && this.isLess(day)) {
@@ -199,9 +210,27 @@ export class SimpleDatepickerComponent implements OnInit {
     }
   }
 
+  setDateRange({from, to}: DateRange) {
+    this.dateRangeShow = false;
+
+    this.from = from;
+    this.to = to;
+    this.date = new Date(from);
+    this.onCheckedEmit();
+    this.onFastDateCheck.emit();
+  }
+
+  showFromDate() {
+    this.date = new Date(this.from);
+  }
+
+  showToDate() {
+    this.date = new Date(this.to);
+  }
+
+
   private resetFromAndTo(): void {
     this.from = null;
     this.to = null;
   }
-
 }

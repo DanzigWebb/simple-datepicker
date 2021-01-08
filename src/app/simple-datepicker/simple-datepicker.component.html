@@ -1,19 +1,11 @@
 <div class="datepicker" [class.single]="single" (click)="$event.stopPropagation()">
 
-  <!--<div class="datepicker-fast" [class.is-show]="fastDateShow">-->
-  <!--  <button-->
-  <!--    class="datepicker-fast-trigger"-->
-  <!--    (click)="fastDateShow = !fastDateShow"-->
-  <!--  >-->
-  <!--    &#10095;-->
-  <!--  </button>-->
-
-  <!--  <div class="fast-wrapper">-->
-  <!--    <button class="datepicker-btn">Неделя</button>-->
-  <!--    <button class="datepicker-btn">Месяц</button>-->
-  <!--    <button class="datepicker-btn">Год</button>-->
-  <!--  </div>-->
-  <!--</div>-->
+  <app-datepicker-ranges
+    [ranges]="dateRanges"
+    [isShow]="dateRangeShow"
+    (toggle)="dateRangeShow = !dateRangeShow"
+    (onCheckRange)="setDateRange($event)">
+  </app-datepicker-ranges>
 
   <app-datepicker-grid
     [month]="month"
@@ -49,6 +41,6 @@
 
   <div class="datepicker-control">
     <button class="datepicker-control-btn close" (click)="onClickClose.emit()">&#10005;</button>
-    <button class="datepicker-control-btn submit" [disabled]="!isCanSubmit" (click)="onClickSubmit.emit()">&#10004;</button>
+    <button class="datepicker-control-btn submit" [disabled]="!isCanSubmit" (click)="onClickSubmit.emit()">Submit</button>
   </div>
 </div>

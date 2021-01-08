@@ -8,5 +8,8 @@ $color_primary: #3d3de9;
 
 $color_light: #f0f4f8;
 $color_lighter: #cccfd2;
-$color_dark: #334e68
+$color_dark: #334e68;
 
+@mixin transition {
+  transition: all .4s ease;
+}

@@ -1,12 +1,12 @@
 @import "datepicker.vars";
 
 .datepicker {
-  font-family: system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Liberation Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";;
+  font-family: sans-serif, 'Sans';
   position: relative;
   overflow: hidden;
   z-index: 1;
   max-width: max-content;
-  padding: 1.5em;
+  padding: 16px 20px;
   background-color: #fff;
   border: 2px solid $color_light;
   border-radius: 8px;
@@ -82,80 +82,6 @@
   * {
     box-sizing: border-box;
   }
-}
-
-
-.datepicker-fast {
-  display: grid;
-  align-items: flex-start;
-  grid-gap: .6rem;
-  z-index: 2;
-
-
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 50%;
-
-  background-color: rgba(255, 255, 255, 0.9);
-  color: $color_primary;
-  padding: 1rem;
-
-  box-shadow: 6px 0 10px -5px rgba(0, 0, 0, 0.4);
-  transform: translateX(calc(-100% - 10px));
-
-  transition: .4s ease all;
-
-  &.is-show {
-    transform: translateX(0);
-
-    .datepicker-fast-trigger {
-      &:hover {
-        transform: translateX(calc(100%));
-      }
-    }
-  }
-
-  &-trigger {
-    margin-right: auto;
-    position: absolute;
-    top: 0;
-    right: 0;
-    padding: 5px 10px;
-    background-color: $color_primary;
-    color: $color_light;
-    border-radius: 0 0 4px 0;
-    border: none;
-    transform: translateX(100%);
-    display: flex;
-    align-items: flex-end;
-    justify-content: flex-end;
-
-    outline: none;
-    cursor: pointer;
-
-    transition: .4s ease all;
-
-    &:hover {
-      transform: translateX(calc(100% + 10px));
-    }
-  }
-}
-
-.fast-wrapper {
-  display: grid;
-  grid-gap: 8px;
-}
-
-.datepicker-btn {
-  cursor: pointer;
-  border: none;
-  background-color: transparent;
-  color: inherit;
-  text-align: left;
-  width: 100%;
-  padding: 6px;
 }
 
 .month {

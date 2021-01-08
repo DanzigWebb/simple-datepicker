@@ -1,6 +1,14 @@
-export interface DatePickerOutput {
+export interface IDatePickerOutput {
   from: Date;
   to: Date;
+}
+
+export class DatePickerOutput implements IDatePickerOutput {
+  constructor(
+    public readonly from: Date,
+    public readonly to: Date
+  ) {
+  }
 }
 
 interface IDay {
@@ -91,3 +99,113 @@ export class Month {
     return days;
   }
 }
+
+
+export class DateRange implements IDatePickerOutput {
+  private readonly today = new Date(new Date().setHours(0, 0, 0, 0));
+
+  public from: Date = new Date();
+  public to: Date = this.today;
+
+  constructor(
+    public label: string
+  ) {
+  }
+
+  setByYears(param: 'from' | 'to', years: number): DateRange {
+    const clone = new Date(this[param]);
+    this[param] = new Date(clone.setFullYear(clone.getFullYear() + years));
+    this.correctRange();
+    return this;
+  }
+
+  fromByYears = (years: number) => this.setByYears('from', years);
+  toByYears = (years: number) => this.setByYears('to', years);
+
+  setByMonths(param: 'from' | 'to', months: number): DateRange {
+    const clone = new Date(this[param]);
+    this[param] = new Date(clone.setMonth(clone.getMonth() + months));
+    this.correctRange();
+    return this;
+  }
+
+  fromByMonths = (months: number) => this.setByMonths('from', months);
+  toByMonths = (months: number) => this.setByMonths('to', months);
+
+  setByWeeks(param: 'from' | 'to', weeks: number) {
+    const clone = new Date(this[param]);
+    const days = weeks * 7;
+    this[param] = new Date(clone.setDate(clone.getDate() + days));
+    this.correctRange();
+    return this;
+  }
+
+  fromByWeeks = (weeks: number) => this.setByWeeks('from', weeks);
+  toByWeeks = (weeks: number) => this.setByWeeks('to', weeks);
+
+  setByDays(param: 'from' | 'to', days: number) {
+    const clone = new Date(this[param]);
+    this[param] = new Date(clone.setDate(clone.getDate() + days));
+    this.correctRange();
+    return this;
+  }
+
+  fromByDays = (days: number) => this.setByDays('from', days);
+  toByDays = (days: number) => this.setByDays('to', days);
+
+  firstDay(param: 'from' | 'to' | 'all') {
+    if (param === 'all') {
+      this.from = new Date(this.from.setDate(1));
+      this.to = new Date(this.to.setDate(1));
+    } else {
+      this[param] = new Date(this[param].setDate(1));
+    }
+    return this;
+  }
+
+  lastDay(param: 'from' | 'to' | 'all') {
+    const toLast = (param: 'from' | 'to') =>
+      this.setByMonths(param, 1)
+        .firstDay(param)
+        .setByDays(param, -1);
+
+    (param === 'all')
+      ? ['all', 'from'].forEach(toLast)
+      : toLast(param);
+
+    return this;
+  }
+
+  private correctRange() {
+    if (this.from.getTime() > this.to.getTime()) {
+      [this.from, this.to] = [this.to, this.from];
+    }
+  }
+}
+
+export const dateRanges: DateRange[] = [
+  new DateRange('Last Week')
+    .fromByWeeks(-1),
+
+  new DateRange('Last 3 days')
+    .fromByDays(-3),
+
+  new DateRange('This Month')
+    .firstDay('from')
+    .lastDay('to'),
+
+  new DateRange('Last Month')
+    .firstDay('from')
+    .fromByMonths(-1)
+    .lastDay('to')
+    .toByMonths(-1),
+
+  new DateRange('Last 3 Month')
+    .fromByMonths(-3)
+    .firstDay('all')
+    .toByMonths(-1)
+    .lastDay('to'),
+
+  new DateRange('Last Year')
+    .fromByYears(-1)
+];

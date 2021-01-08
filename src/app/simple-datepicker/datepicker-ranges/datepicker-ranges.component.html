@@ -1,0 +1,18 @@
+<div class="ranges" [class.is-show]="isShow">
+  <button
+    class="ranges-trigger"
+    (click)="toggle.emit()"
+  >
+    &#10095;
+  </button>
+
+  <div class="ranges-wrapper">
+    <button
+      class="ranges-btn"
+      *ngFor="let date of ranges"
+      (click)="checkRangeHandle(date)"
+    >
+      <span>{{date.label}}</span>
+    </button>
+  </div>
+</div>

@@ -5,6 +5,7 @@ import { DatepickerDayComponent } from './datepicker-day/datepicker-day.componen
 import { DatepickerGridComponent } from './datepicker-grid/datepicker-grid.component';
 import { SimpleDatepickerDirective } from './simple-datepicker.directive';
 import { FormsModule } from '@angular/forms';
+import { DatepickerRangesComponent } from './datepicker-ranges/datepicker-ranges.component';
 
 
 @NgModule({
@@ -12,7 +13,8 @@ import { FormsModule } from '@angular/forms';
     SimpleDatepickerComponent,
     DatepickerDayComponent,
     DatepickerGridComponent,
-    SimpleDatepickerDirective
+    SimpleDatepickerDirective,
+    DatepickerRangesComponent
   ],
   imports: [
     CommonModule,

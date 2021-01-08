@@ -1,14 +1,14 @@
 import { ApplicationRef, ComponentFactoryResolver, ComponentRef, Directive, ElementRef, EmbeddedViewRef, EventEmitter, Injector, Input, OnInit, Output } from '@angular/core';
 import { SimpleDatepickerComponent } from './simple-datepicker.component';
 import { createPopper, Placement } from '@popperjs/core';
-import { DatePickerOutput } from './simple-datepicker';
+import { IDatePickerOutput } from './simple-datepicker';
 
 @Directive({
   selector: '[appSimpleDatepicker]'
 })
 export class SimpleDatepickerDirective implements OnInit {
 
-  @Output() onChecked = new EventEmitter<DatePickerOutput>();
+  @Output() onChecked = new EventEmitter<IDatePickerOutput>();
   @Output() onDayChecked = new EventEmitter<Date>();
 
   @Input() localMonth: string[] = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
@@ -18,14 +18,14 @@ export class SimpleDatepickerDirective implements OnInit {
   @Input() single = true;
   @Input() dateRange = false;
 
-  @Input() placement: Placement = 'bottom-start';
+  @Input() placement: Placement = 'bottom';
 
   datepickerRef: HTMLElement;
   datepickerComp: SimpleDatepickerComponent;
   componentRef: ComponentRef<SimpleDatepickerComponent>;
   overlay: HTMLDivElement;
 
-  datepickerValue: DatePickerOutput;
+  datepickerValue: IDatePickerOutput;
 
   constructor(
     private el: ElementRef,
@@ -56,6 +56,10 @@ export class SimpleDatepickerDirective implements OnInit {
 
     this.compareInputs();
     this.initPopper();
+
+    if (this.datepickerValue?.from) {
+      this.datepickerComp.updateDate.next(this.datepickerValue?.from);
+    }
   }
 
   compareInputs() {
@@ -70,10 +74,11 @@ export class SimpleDatepickerDirective implements OnInit {
   }
 
   listenEvents() {
-    this.datepickerComp.onChecked.subscribe((e: DatePickerOutput) => {
+    this.datepickerComp.onChecked.subscribe((e: IDatePickerOutput) => {
       this.datepickerValue = e;
       this.onChecked.emit(e);
     });
+
     this.datepickerComp.onDayChecked.subscribe(e => {
       this.onDayChecked.emit(e);
     });
@@ -84,6 +89,10 @@ export class SimpleDatepickerDirective implements OnInit {
 
     this.datepickerComp.onClickSubmit.subscribe(() => {
       this.destroyDatepicker();
+      this.setInputValue();
+    });
+
+    this.datepickerComp.onFastDateCheck.subscribe(() => {
       this.setInputValue();
     });
   }
@@ -101,7 +110,14 @@ export class SimpleDatepickerDirective implements OnInit {
   createOverlay(): HTMLDivElement {
     const overlay = document.createElement('div');
     overlay.classList.add('datepicker-overlay');
-    overlay.setAttribute('style', 'position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 11');
+    overlay.setAttribute('style', `
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 11
+    `);
     overlay.addEventListener('click', e => this.destroyDatepicker(), {once: true});
     return overlay;
   }
@@ -113,7 +129,21 @@ export class SimpleDatepickerDirective implements OnInit {
 
   initPopper(): void {
     createPopper(this.el.nativeElement, this.datepickerRef, {
-      placement: this.placement
+      placement: this.placement,
+      modifiers: [
+        {
+          name: 'offset',
+          options: {
+            offset: ({placement, popper}) => {
+              if (placement === 'bottom') {
+                return [-popper.height / 2, 0];
+              } else {
+                return [];
+              }
+            }
+          }
+        }
+      ]
     });
   }
 }
